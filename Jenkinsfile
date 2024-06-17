@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/urstory/apirdsdemo.git', credentialsId: 'carami_github_id'
+                git branch: 'main', url: 'https://github.com/jinijavac/apidemo.git', credentialsId: 'jini_github_id'
             }
         }
         stage('Build') {
@@ -24,6 +24,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
+                 withAWS(credentials: 'lion-admin') {
+                                    sh 'aws s3 cp build/libs/apirdsdemo-0.0.1-SNAPSHOT.jar s3://jini-build-file/'
+                                }
                 // deploy steps
             }
         }
